@@ -29,35 +29,65 @@ def calculate(num1, num2, operation):
     raise ValueError("Invalid operation. Please choose from (+, -, *, /).")
 
 
+def add_to_history(history, num1, num2, operation, result):
+    history.append(f"{num1} {operation} {num2} = {result}")
+
+
+def show_history(history):
+    if not history:
+        print("No calculations in history yet.")
+        return
+
+    print("\nCalculator History:")
+    for index, entry in enumerate(history, start=1):
+        print(f"{index}. {entry}")
+    print()
+
+
+def display_menu():
+    print("=== SAHILCALC V1 ===")
+    print("1. Perform a calculation")
+    print("2. View history")
+    print("3. Clear history")
+    print("4. Exit")
+    print()
+
+
 def run_calculator():
+    history = []
+
     while True:
-        print("=== SAHILCALC V1 ===")
-        print()
-        print("A simple calculator made by Sahil")
-        print()
+        display_menu()
+        choice = input("Select an option (1-4): ").strip()
 
-        num1 = read_float("Enter the first number: ")
-        num2 = read_float("Enter the second number: ")
-        print()
-        print("First number:", num1)
-        print("Second number:", num2)
-        print()
+        if choice == "1":
+            print("A simple calculator made by Sahil")
+            print()
 
-        operation = read_operator()
-        print()
+            num1 = read_float("Enter the first number: ")
+            num2 = read_float("Enter the second number: ")
+            operation = read_operator()
 
-        try:
-            result = calculate(num1, num2, operation)
-            print("Result:", result)
-        except (ZeroDivisionError, ValueError) as error:
-            print(error)
+            try:
+                result = calculate(num1, num2, operation)
+                add_to_history(history, num1, num2, operation, result)
+                print("\nResult:", result)
+            except (ZeroDivisionError, ValueError) as error:
+                print(error)
 
-        print()
-        calculate_again = input("Do you want to perform another calculation? (yes/no): ").strip().lower()
+        elif choice == "2":
+            show_history(history)
 
-        if calculate_again != "yes":
+        elif choice == "3":
+            history.clear()
+            print("History cleared.")
+
+        elif choice == "4":
             print("Thank you for using SAHILCALC V1. Goodbye!")
             break
+
+        else:
+            print("Invalid option. Please choose 1, 2, 3, or 4.")
 
         print()
 
