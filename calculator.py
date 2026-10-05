@@ -1,52 +1,70 @@
-while True:
-    print("=== SAHILCALC V1 ===")
-    print()
 
-    try:
+def read_float(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter numeric values.")
+
+
+def read_operator():
+    while True:
+        operation = input("Choose an operation: (+, -, *, /): ").strip()
+        if operation in {"+", "-", "*", "/"}:
+            return operation
+        print("Invalid operation. Please choose from (+, -, *, /).")
+
+
+def calculate(num1, num2, operation):
+    if operation == "+":
+        return num1 + num2
+    if operation == "-":
+        return num1 - num2
+    if operation == "*":
+        return num1 * num2
+    if operation == "/":
+        if num2 == 0:
+            raise ZeroDivisionError("Error: Division by zero is not allowed.")
+        return num1 / num2
+    raise ValueError("Invalid operation. Please choose from (+, -, *, /).")
+
+
+def run_calculator():
+    while True:
+        print("=== SAHILCALC V1 ===")
+        print()
         print("A simple calculator made by Sahil")
         print()
-        print("Enter the first number:")
-        num1 = float(input())
-        print()
-        print("Enter the second number:")
-        num2 = float(input())
+
+        num1 = read_float("Enter the first number: ")
+        num2 = read_float("Enter the second number: ")
         print()
         print("First number:", num1)
         print("Second number:", num2)
         print()
 
-        print("Choose an operation: (+, -, *, /)")
-        operation = input()
+        operation = read_operator()
         print()
 
-        if operation == "+":
-            result = num1 + num2
+        try:
+            result = calculate(num1, num2, operation)
             print("Result:", result)
-        elif operation == "-":
-            result = num1 - num2
-            print("Result:", result)
-        elif operation == "*":
-            result = num1 * num2
-            print("Result:", result)
-        elif operation == "/":
-            if num2 == 0:
-                print("Error: Division by zero is not allowed.")
-            else:
-                result = num1 / num2
-                print("Result:", result)
-        else:
-            print("Invalid operation. Please choose from (+, -, *, /).")
+        except (ZeroDivisionError, ValueError) as error:
+            print(error)
 
-    except ValueError:
-        print("Invalid input. Please enter numeric values.")
-    except Exception:
-        print("An error occurred:")
+        print()
+        calculate_again = input("Do you want to perform another calculation? (yes/no): ").strip().lower()
 
-    print("Do you want to perform another calculation? (yes/no): ")
-    calculate_again = input().strip().lower()
+        if calculate_again != "yes":
+            print("Thank you for using SAHILCALC V1. Goodbye!")
+            break
 
-    if calculate_again == "yes":
-        continue
+        print()
 
-    print("Thank you for using SAHILCALC V1. Goodbye!")
-    break
+
+def main():
+    run_calculator()
+
+
+if __name__ == "__main__":
+    main()
